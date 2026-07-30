@@ -1,1 +1,0 @@
-# qoves-take-home-assignment
