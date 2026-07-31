@@ -1,0 +1,29 @@
+apiVersion: v1
+
+kind: Service
+
+
+metadata:
+
+  name: qoves-api
+
+  namespace: qoves-app
+
+
+
+spec:
+
+
+  selector:
+
+
+    app: qoves-api
+
+
+
+  ports:
+
+
+  - port: 80
+
+    targetPort: 5000

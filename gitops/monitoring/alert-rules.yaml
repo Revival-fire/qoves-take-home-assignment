@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: qoves-app
+data:
+  qoves-alerts.yaml: |
+    groups:
+    - name: qoves-api
+      rules:
+      - alert: QovesAPIHighHealthFailures
+        expr:
+          rate(http_requests_total{endpoint="/healthz",status="503"}[5m]) > 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Qoves API health checks failing"
+          description: "The API cannot successfully connect to PostgreSQL."

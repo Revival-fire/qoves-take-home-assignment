@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  name: qoves-api-ingress
+
+  namespace: qoves-app
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+    - host: qoves.local
+
+      http:
+        paths:
+          - path: /
+
+            pathType: Prefix
+
+            backend:
+              service:
+                name: qoves-api
+
+                port:
+                  number: 80

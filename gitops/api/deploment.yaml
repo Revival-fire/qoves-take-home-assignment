@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: qoves-api
+
+  namespace: qoves-app
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: qoves-api
+
+  template:
+    metadata:
+      labels:
+        app: qoves-api
+
+    spec:
+      containers:
+        - name: api
+
+          image: ghcr.io/revival-fire/qovesapp:1.0.0
+
+          ports:
+            - containerPort: 5000
+
+          env:
+            - name: DATABASE_URL
+
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+
+                  key: DATABASE_URL
+
+          readinessProbe:
+            httpGet:
+              path: /healthz
+
+              port: 5000
+
+            initialDelaySeconds: 10
+
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+
+              port: 5000
+
+            initialDelaySeconds: 30
+
+            periodSeconds: 10
+
+          resources:
+            requests:
+              cpu: 100m
+
+              memory: 128Mi
+
+            limits:
+              cpu: 500m
+
+              memory: 256Mi
